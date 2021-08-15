@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class VidhanfamilyserviceApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(VidhanfamilyserviceApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(VidhanfamilyserviceApplication.class, args);
+    }
 
 }
