@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Entity
 public class VidhanFamily {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long familyMemberId;
     private String familyMemberName;
     private String passportNumber;
