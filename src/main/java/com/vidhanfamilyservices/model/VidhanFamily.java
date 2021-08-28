@@ -17,6 +17,13 @@ public class VidhanFamily {
     public VidhanFamily() {
     }
 
+    public VidhanFamily(Long familyMemberId, String familyMemberName, String passportNumber, LocalDate dob) {
+        this.familyMemberId = familyMemberId;
+        this.familyMemberName = familyMemberName;
+        this.passportNumber = passportNumber;
+        this.dob = dob;
+    }
+
     public Long getFamilyMemberId() {
         return familyMemberId;
     }
