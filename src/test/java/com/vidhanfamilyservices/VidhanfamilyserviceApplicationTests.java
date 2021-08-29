@@ -1,6 +1,7 @@
 package com.vidhanfamilyservices;
 
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.vidhanfamilyservices.model.VidhanFamily;
@@ -16,12 +17,12 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
-import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -69,6 +70,77 @@ class VidhanFamilyServiceApplicationTests {
         assertEquals(true, vidhanFamilyRepository.findById(actualRecord.getFamilyMemberId()).isPresent());
 
     }
+
+
+    @Test
+    public void testGetAllMembers() throws Exception {
+        Map<String, VidhanFamily> testData = getTestData().entrySet().stream().filter(kv -> "familyMember1,familyMember2".contains(kv.getKey())).collect(Collectors.toMap(kv -> kv.getKey(), kv -> kv.getValue()));
+
+        List<VidhanFamily> expectedRecords = new ArrayList<>();
+        for (Map.Entry<String, VidhanFamily> kv : testData.entrySet()) {
+            expectedRecords.add(om.readValue(mockMvc.perform(post("/vidhanapi/v1.0/familymember")
+                    .contentType("application/json")
+                    .content(om.writeValueAsString(kv.getValue())))
+                    .andDo(print())
+                    .andExpect(status().isCreated()).andReturn().getResponse().getContentAsString(), VidhanFamily.class));
+        }
+        Collections.sort(expectedRecords, Comparator.comparing(VidhanFamily::getFamilyMemberId));
+
+        List<VidhanFamily> actualRecords = om.readValue(mockMvc.perform(get("/vidhanapi/v1.0/familymembers"))
+                .andDo(print())
+                .andExpect(jsonPath("$.*", isA(ArrayList.class)))
+                .andExpect(jsonPath("$.*", hasSize(expectedRecords.size())))
+                .andExpect(status().isOk()).andReturn().getResponse().getContentAsString(), new TypeReference<List<VidhanFamily>>() {
+        });
+
+        for (int i = 0; i < expectedRecords.size(); i++) {
+            Assertions.assertTrue(new ReflectionEquals(expectedRecords.get(i)).matches(actualRecords.get(i)));
+        }
+    }
+
+    @Test
+    public void testGetMemberRecordWithId() throws Exception {
+        VidhanFamily expectedRecord = getTestData().get("familyMember1");
+
+        expectedRecord = om.readValue(mockMvc.perform(post("/vidhanapi/v1.0/familymember")
+                .contentType("application/json")
+                .content(om.writeValueAsString(expectedRecord)))
+                .andDo(print())
+                .andExpect(status().isCreated()).andReturn().getResponse().getContentAsString(), VidhanFamily.class);
+
+        VidhanFamily actualRecord = om.readValue(mockMvc.perform(get("/vidhanapi/v1.0/familymember/" + expectedRecord.getFamilyMemberId()))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString(), VidhanFamily.class);
+
+        Assertions.assertTrue(new ReflectionEquals(expectedRecord).matches(actualRecord));
+
+        //non existing record test
+        mockMvc.perform(get("/vidhanapi/v1.0/familymember/" + Integer.MAX_VALUE))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void testNotAllowedMethod() throws Exception {
+        VidhanFamily expectedRecord = getTestData().get("familyMember1");
+
+        VidhanFamily actualRecord = om.readValue(mockMvc.perform(post("/vidhanapi/v1.0/familymember")
+                .contentType("application/json")
+                .content(om.writeValueAsString(expectedRecord)))
+                .andDo(print())
+                .andExpect(status().isCreated()).andReturn().getResponse().getContentAsString(), VidhanFamily.class);
+
+        mockMvc.perform(put("/vidhanapi/v1.0/familymember/" + actualRecord.getFamilyMemberId()))
+                .andExpect(status().isMethodNotAllowed());
+
+        mockMvc.perform(patch("/vidhanapi/v1.0/familymember/" +  actualRecord.getFamilyMemberId()))
+                .andExpect(status().isMethodNotAllowed());
+
+        mockMvc.perform(delete("/vidhanapi/v1.0/familymember/" +  actualRecord.getFamilyMemberId()))
+                .andExpect(status().isMethodNotAllowed());
+    }
+
 
     private Map<String, VidhanFamily> getTestData() {
         Map<String, VidhanFamily> data = new HashMap<>();
