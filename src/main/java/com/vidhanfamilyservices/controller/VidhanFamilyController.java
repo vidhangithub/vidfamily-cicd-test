@@ -28,7 +28,7 @@ public class VidhanFamilyController {
     }
 
     @GetMapping("familymember/{id}")
-    public ResponseEntity<VidhanFamily> getFamilyMember(@PathVariable Long id) {
+    public ResponseEntity<VidhanFamily> getFamilyMember(@PathVariable("id") Long id) {
         VidhanFamily familyMember = vidhanFamilyRepository.findById(id).isPresent()
                 ? vidhanFamilyRepository.findById(id).get() : null;
         if (familyMember != null) {
