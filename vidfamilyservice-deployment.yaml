@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vidservice-deploy
+  namespace: vid-namespace
+  labels:
+        app: vid-family-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: vid-family-app
+  template:
+    metadata:
+      labels:
+        app: vid-family-app
+    spec:
+      containers:
+        - name: vid-family-app-pod
+          image: vidhanchandrauk/vidhan-family-service:latest
+          ports:
+            - containerPort: 8444
