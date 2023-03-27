@@ -19,7 +19,7 @@ pipeline {
          stage('push image to hub') {
             steps {
                 withCredentials([string(credentialsId: 'dockerhubpassword', variable: 'dockerhubupwd')]) {
-                sh 'docker login -u vidhanchandrauk@gmail.com -p ${dockerhubpwd}'
+                sh 'docker login -u vidhanchandrauk -p ${dockerhubupwd}'
                 sh 'docker push vidhanchandrauk/vid-family-service-1.0'
                 }
             }
