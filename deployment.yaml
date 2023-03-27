@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: vid-family-app-pod
-          image: vidhanchandrauk/vidhan-family-service:latest
+          image: vidhanchandrauk/vid-family-service-1.0:latest
           ports:
             - containerPort: 8444
 ---
