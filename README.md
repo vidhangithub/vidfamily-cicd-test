@@ -1,7 +1,7 @@
 ## Environment:
-- Java version: 11
+- Java version: 21
 - Maven version: 3.8.1
-- Spring Boot version: 2.5.3
+- Spring Boot version: 3.1.4
 
 ## Data:
 Example of a family data JSON object:
