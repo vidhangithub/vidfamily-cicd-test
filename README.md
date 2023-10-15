@@ -9,8 +9,8 @@ Example of a family data JSON object:
 {
         "familyMemberId": 1,
         "familyMemberName": "Vidhan Chandra",
-        "passportNumber": "R3049185",
-        "dob": "1987-01-10"
+        "passportNumber": "R123456789",
+        "dob": "1985-01-01"
     }
 ```
 ## Requirements:
