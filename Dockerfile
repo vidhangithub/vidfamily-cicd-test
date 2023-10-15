@@ -1,15 +1,15 @@
-FROM adoptopenjdk:16_36-jre-hotspot as builder
+FROM openjdk:21 as builder
 WORKDIR extracted
 ADD target/*.jar app.jar
 RUN java -Djarmode=layertools -jar app.jar extract
 
-FROM adoptopenjdk:16_36-jre-hotspot
+FROM openjdk:21
 WORKDIR application
 COPY --from=builder extracted/dependencies/ ./
 COPY --from=builder extracted/spring-boot-loader/ ./
 COPY --from=builder extracted/snapshot-dependencies/ ./
 COPY --from=builder extracted/application/ ./
 
-EXPOSE 8080
+EXPOSE 8444
 
 ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]
