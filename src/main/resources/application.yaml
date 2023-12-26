@@ -1,0 +1,19 @@
+spring:
+  h2:
+    console:
+      enabled: 'true'
+  datasource:
+    url: jdbc:h2:mem:viddb
+  data:
+    jpa:
+      repositories:
+        bootstrap-mode: default
+  jpa:
+    defer-datasource-initialization: 'true'
+server:
+  port: '8444'
+
+jwt:
+  configLocation: src/main/resources
+  alg: RS512
+  expire: "60m"
