@@ -1,0 +1,60 @@
+pipeline:
+  name: vid_cicd_test
+  identifier: vid_cicd_test
+  projectIdentifier: FWB_HUMAN_CHANNEL_TEST
+  orgIdentifier: workshoplbgtcs232org
+  tags: {}
+  properties:
+    ci:
+      codebase:
+        connectorRef: vid_github
+        repoName: vidfamily-cicd-test
+        build: <+input>
+  stages:
+    - stage:
+        name: build_pack_upload
+        identifier: build_pack_upload
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: true
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Cloud
+            spec: {}
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: build
+                  identifier: build
+                  spec:
+                    shell: Sh
+                    command: mvn clean install package
+                  failureStrategies:
+                    - onFailure:
+                        errors:
+                          - AllErrors
+                        action:
+                          type: Abort
+              - step:
+                  type: BuildAndPushDockerRegistry
+                  name: BuildAndPushDockerRegistry_1
+                  identifier: BuildAndPushDockerRegistry_1
+                  spec:
+                    connectorRef: vid_dockerhub
+                    repo: vidhanchandrauk
+                    tags:
+                      - harness
+                  failureStrategies:
+                    - onFailure:
+                        errors:
+                          - AllErrors
+                        action:
+                          type: Abort
+  variables:
+    - name: seusername
+      type: String
+      value: VidhanChandra
