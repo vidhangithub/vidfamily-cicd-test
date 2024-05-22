@@ -56,7 +56,9 @@ pipeline:
                   identifier: build
                   spec:
                     shell: Sh
-                    command: mvn clean install package
+                    command: |-
+                      mvn -v
+                      mvn clean install package
                   failureStrategies:
                     - onFailure:
                         errors:
