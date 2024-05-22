@@ -14,7 +14,7 @@
     <name>vidhanfamilyservice</name>
     <description>A boot project to explore CICD/T</description>
     <properties>
-        <java.version>11</java.version>
+        <java.version>21</java.version>
     </properties>
     <dependencies>
         <dependency>
