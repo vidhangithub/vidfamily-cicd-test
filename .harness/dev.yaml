@@ -1,0 +1,6 @@
+environment:
+  name: dev
+  identifier: dev
+  orgIdentifier: workshoplbgtcs232org
+  projectIdentifier: FWB_HUMAN_CHANNEL_TEST
+  type: PreProduction
