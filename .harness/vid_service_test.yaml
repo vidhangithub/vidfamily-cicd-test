@@ -1,0 +1,5 @@
+service:
+  name: vid_service_test
+  identifier: vid_service_test
+  orgIdentifier: workshoplbgtcs232org
+  projectIdentifier: FWB_HUMAN_CHANNEL_TEST
