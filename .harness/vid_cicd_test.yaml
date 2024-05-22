@@ -27,6 +27,25 @@ pipeline:
           execution:
             steps:
               - step:
+                  type: Owasp
+                  name: Owasp
+                  identifier: Owasp
+                  spec:
+                    mode: orchestration
+                    config: default
+                    target:
+                      type: repository
+                      detection: auto
+                    advanced:
+                      log:
+                        level: info
+              - step:
+                  name: fortify-scan-DAST
+                  identifier: fortifyscanDAST
+                  template:
+                    templateRef: account.fortify_scan
+                    versionLabel: v0.1
+              - step:
                   type: Run
                   name: build
                   identifier: build
