@@ -58,7 +58,8 @@ pipeline:
                     shell: Sh
                     command: |-
                       mvn -v
-                      mvn clean install package
+                      mvn clean
+                      mvn clean install -U
                   failureStrategies:
                     - onFailure:
                         errors:
