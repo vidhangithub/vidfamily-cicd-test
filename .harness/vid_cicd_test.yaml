@@ -58,7 +58,6 @@ pipeline:
                     shell: Sh
                     command: |-
                       mvn -v
-                      mvn clean
                       mvn clean install -U
                   failureStrategies:
                     - onFailure:
@@ -72,9 +71,9 @@ pipeline:
                   identifier: BuildAndPushDockerRegistry_1
                   spec:
                     connectorRef: vid_dockerhub
-                    repo: vidhanchandrauk
+                    repo: vidhanchandrauk/vidhan-harness-test
                     tags:
-                      - harness
+                      - v1
                   failureStrategies:
                     - onFailure:
                         errors:
