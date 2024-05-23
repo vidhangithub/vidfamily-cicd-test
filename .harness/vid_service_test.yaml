@@ -3,3 +3,6 @@ service:
   identifier: vid_service_test
   orgIdentifier: workshoplbgtcs232org
   projectIdentifier: FWB_HUMAN_CHANNEL_TEST
+  serviceDefinition:
+    spec: {}
+    type: Kubernetes
