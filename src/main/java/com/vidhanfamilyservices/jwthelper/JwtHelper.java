@@ -2,11 +2,7 @@ package com.vidhanfamilyservices.jwthelper;
 
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
-import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.FileInputStream;
